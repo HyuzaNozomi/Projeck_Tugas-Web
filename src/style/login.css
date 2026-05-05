@@ -1,0 +1,17 @@
+/* Custom style untuk form registrasi */
+input:focus, select:focus, textarea:focus {
+    outline: none;
+    /* Gunakan box-shadow untuk efek 'ring' yang kompatibel */
+    box-shadow: 0 0 0 2px #4f46e5;  /* indigo-600 */
+    border-color: #4f46e5;
+}
+
+/* Efek transisi untuk tombol */
+button {
+    transition: all 0.2s ease;
+}
+
+/* Opsional: styling tambahan */
+input, select, textarea {
+    transition: all 0.2s ease;
+}

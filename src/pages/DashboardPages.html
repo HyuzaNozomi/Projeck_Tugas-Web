@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Manajemen Mahasiswa</title>
+    <!-- Tailwind CSS hasil compile -->
+    <link href="./src/style/output.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link href="./src/style/dashboard.css" rel="stylesheet">
+    <!-- Library export -->
+    <script src="https://cdn.sheetjs.com/xlsx-0.20.2/package/dist/xlsx.full.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
+</head>
+<body class="bg-gray-100 font-sans">
+
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+
+        <!-- Kartu Statistik -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6" id="statsCards">
+            <!-- diisi JS -->
+        </div>
+
+        <!-- Filter Bar -->
+        <div class="bg-white rounded-xl shadow p-4 mb-6 flex flex-wrap justify-between items-center gap-3">
+            <div class="flex flex-wrap gap-2" id="filterTabs">
+                <button data-filter="all" class="tab-filter px-4 py-2 rounded-lg text-sm font-medium bg-indigo-600 text-white">Semua Data</button>
+                <button data-filter="laki" class="tab-filter px-4 py-2 rounded-lg text-sm font-medium text-gray-600 hover:bg-gray-100">Laki-laki</button>
+                <button data-filter="perempuan" class="tab-filter px-4 py-2 rounded-lg text-sm font-medium text-gray-600 hover:bg-gray-100">Perempuan</button>
+            </div>
+            <div class="flex flex-wrap gap-2">
+                <input type="text" id="searchInput" placeholder="Cari NIM atau Nama..." class="border border-gray-300 rounded-lg px-4 py-2 text-sm w-64">
+                <button id="exportExcelBtn" class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg text-sm font-medium">Export Excel</button>
+                <button id="exportWordBtn" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-medium">Export Word</button>
+                <button id="openModalBtn" class="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-lg text-sm font-medium">+ Tambah Mahasiswa</button>
+            </div>
+        </div>
+
+        <!-- Tabel -->
+        <div class="bg-white rounded-xl shadow overflow-hidden">
+            <div class="px-6 py-4 border-b border-gray-200 text-center">
+                <h2 class="text-lg font-semibold text-gray-800">Daftar Mahasiswa</h2>
+            </div>
+            <div class="overflow-x-auto">
+                <table class="min-w-full divide-y divide-gray-200">
+                    <thead class="bg-gray-50">
+                        <tr>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">NIM</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Nama</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Alamat</th>
+                            <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase">JK</th>
+                            <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase">Tanggal Lahir</th>
+                            <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase">Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tableBody" class="divide-y divide-gray-100 bg-white">
+                        <tr><td colspan="6" class="text-center py-10 text-gray-400">Memuat data...</td></tr>
+                    </tbody>
+                </table>
+            </div>
+            <!-- Pagination -->
+            <div class="px-6 py-3 bg-gray-50 border-t flex flex-col sm:flex-row justify-between items-center gap-3">
+                <p id="infoJumlah" class="text-sm text-gray-500">Menampilkan 0 dari 0 data</p>
+                <div class="flex gap-2">
+                    <button id="prevPage" class="px-4 py-2 border rounded-md text-sm disabled:opacity-50 hover:bg-gray-100">Sebelumnya</button>
+                    <span id="pageIndicator" class="px-4 py-2 text-sm">Halaman 1</span>
+                    <button id="nextPage" class="px-4 py-2 border rounded-md text-sm disabled:opacity-50 hover:bg-gray-100">Berikutnya</button>
+                </div>
+            </div>
+            <!-- Loading Indicator -->
+            <div id="loadingIndicator" class="px-6 py-4 text-center text-gray-500 hidden">
+                <div class="inline-block">
+                    <div class="animate-spin rounded-full h-6 w-6 border-b-2 border-indigo-600"></div>
+                    <p class="mt-2 text-sm">Memuat data...</p>
+                </div>
+            </div>
+            <!-- End Message -->
+            <div id="endMessage" class="px-6 py-4 text-center text-gray-400 hidden">
+                <p class="text-sm">✓ Semua data sudah ditampilkan</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div id="modal" class="fixed inset-0 bg-black bg-opacity-50 items-center justify-center z-50 hidden">
+        <div class="bg-white rounded-xl w-full max-w-md mx-4 shadow-2xl">
+            <div class="flex justify-between items-center px-6 py-4 border-b">
+                <h3 id="modalTitle" class="text-lg font-semibold">Tambah Mahasiswa</h3>
+                <button id="closeModalBtn" class="text-gray-400 hover:text-gray-600 text-2xl">&times;</button>
+            </div>
+            <form id="mahasiswaForm" class="p-6 space-y-4">
+                <input type="hidden" id="editNim" value="">
+                <div><label class="block text-sm font-medium text-gray-700">NIM</label><input type="text" id="nim" required class="w-full border rounded-md px-3 py-2"></div>
+                <div><label class="block text-sm font-medium text-gray-700">Nama Lengkap</label><input type="text" id="nama" required class="w-full border rounded-md px-3 py-2"></div>
+                <div><label class="block text-sm font-medium text-gray-700">Alamat</label><textarea id="alamat" rows="2" required class="w-full border rounded-md px-3 py-2"></textarea></div>
+                <div><label class="block text-sm font-medium text-gray-700">Jenis Kelamin</label><div class="flex gap-4 mt-1"><label><input type="radio" name="jk" value="Laki-laki" checked> Laki-laki</label><label><input type="radio" name="jk" value="Perempuan"> Perempuan</label></div></div>
+                <div><label class="block text-sm font-medium text-gray-700">Tanggal Lahir</label><div class="flex gap-2"><select id="tgl" class="w-1/3 border rounded-md px-2 py-2"></select><select id="bln" class="w-1/3 border rounded-md px-2 py-2"><option value="01">Jan</option><option value="02">Feb</option><option value="03">Mar</option><option value="04">Apr</option><option value="05">Mei</option><option value="06">Jun</option><option value="07">Jul</option><option value="08">Ags</option><option value="09">Sep</option><option value="10">Okt</option><option value="11">Nov</option><option value="12">Des</option></select><select id="thn" class="w-1/3 border rounded-md px-2 py-2"></select></div></div>
+                <div><label class="block text-sm font-medium text-gray-700">Password</label><input type="password" id="password" required class="w-full border rounded-md px-3 py-2"></div>
+                <div class="flex justify-end gap-3 pt-3"><button type="button" id="cancelModalBtn" class="px-4 py-2 border rounded-md hover:bg-gray-50">Batal</button><button type="submit" class="px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700">Simpan</button></div>
+            </form>
+        </div>
+    </div>
+
+    <script src="./src/js/dashboard.js"></script>
+</body>
+</html>

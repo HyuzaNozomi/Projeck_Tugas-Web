@@ -1,0 +1,7 @@
+/* Custom style untuk dashboard mahasiswa */
+.tab-filter, button {
+    transition: all 0.2s ease;
+}
+#modal {
+    transition: opacity 0.2s;
+}
