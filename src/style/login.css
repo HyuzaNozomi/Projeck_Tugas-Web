@@ -1,0 +1,56 @@
+/* Custom style untuk form registrasi */
+input:focus, select:focus, textarea:focus {
+    outline: none;
+    /* Gunakan box-shadow untuk efek 'ring' yang kompatibel */
+    box-shadow: 0 0 0 2px #4f46e5;  /* indigo-600 */
+    border-color: #4f46e5;
+}
+
+/* Efek transisi untuk tombol */
+button {
+    transition: all 0.2s ease;
+}
+
+/* Opsional: styling tambahan */
+input, select, textarea {
+    transition: all 0.2s ease;
+}
+
+/* Styling untuk password input */
+#password {
+    padding-right: 2.75rem;
+}
+
+#password:focus {
+    border-color: #4f46e5;
+    box-shadow: 0 0 0 2px #4f46e5;
+}
+
+/* Animasi fadeOut untuk notifikasi */
+@keyframes fadeOut {
+    0% { 
+        opacity: 1; 
+        transform: translateX(-50%) translateY(-50%); 
+    }
+    100% { 
+        opacity: 0; 
+        transform: translateX(-50%) translateY(-70%); 
+    }
+}
+
+/* Styling untuk tombol toggle password */
+#togglePassword {
+    outline: none;
+    cursor: pointer;
+}
+
+#togglePassword:hover {
+    background-color: rgba(99, 102, 241, 0.1);
+    color: #4f46e5;
+}
+
+#togglePassword:focus-visible {
+    outline: 2px solid #4f46e5;
+    outline-offset: 2px;
+}
+

@@ -1,0 +1,54 @@
+/* Navbar kaca (glassmorphism) - bening, blur, bentuk kapsul */
+#navbar {
+    position: fixed;
+    top: 16px;
+    left: 16px;
+    right: 16px;
+    z-index: 50;
+    /* Latar bening transparan seperti kaca */
+    background-color: rgba(255, 255, 255, 0.25);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-radius: 9999px;              /* bentuk kapsul */
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+    
+    /* Efek muncul/hilang */
+    transform: translateY(-150%);
+    transition: transform 0.3s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+}
+
+/* Saat navbar muncul */
+#navbar.show-navbar {
+    transform: translateY(0);
+}
+
+/* Saat tersembunyi, agar tidak mengganggu interaksi */
+#navbar:not(.show-navbar) {
+    pointer-events: none;
+}
+
+/* Warna teks dan link (gelap agar kontras dengan latar bening) */
+.brand-logo {
+    color: #1e293b;
+    font-weight: bold;
+    text-shadow: 0 1px 1px rgba(255,255,255,0.3);
+    transition: color 0.2s;
+}
+.nav-link {
+    color: #1f2937;
+    transition: all 0.2s;
+    padding: 0.5rem 1rem;
+    border-radius: 0.5rem;
+}
+.nav-link:hover {
+    color: #000000;
+    background-color: rgba(255, 255, 255, 0.5);
+}
+
+/* Opsional: efek saat discroll (misal sedikit lebih solid) */
+#navbar.navbar-scrolled {
+    background-color: rgba(255, 255, 255, 0.4);
+    backdrop-filter: blur(16px);
+    border-color: rgba(255, 255, 255, 0.6);
+}
