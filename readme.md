@@ -1,96 +1,102 @@
-# 🎓 Sistem Informasi Mahasiswa
+# Sistem Informasi Mahasiswa
 
-Aplikasi web **Sistem Informasi Mahasiswa** adalah platform sederhana untuk mengelola data mahasiswa. Dibangun dengan **HTML, Tailwind CSS, dan JavaScript murni (vanilla)**. Aplikasi ini memiliki halaman **Registrasi** untuk menambah mahasiswa baru, dan **Dashboard** untuk melihat, mencari, mengedit, menghapus, serta mengekspor data mahasiswa ke Excel/Word. Navbar-nya unik: **awalnya tersembunyi, lalu muncul seperti kaca bening (glassmorphism) saat kursor mendekati area atas layar atau ketika scroll ke atas**.
+Aplikasi web **Sistem Informasi Mahasiswa** adalah platform sederhana untuk mengelola data mahasiswa. Dibangun dengan **HTML, Tailwind CSS, dan JavaScript murni (vanilla)**.
 
-## ✨ Fitur Utama
+Aplikasi ini memiliki halaman **Registrasi** untuk menambah mahasiswa baru, dan **Dashboard** untuk melihat, mencari, mengedit, menghapus, serta mengekspor data mahasiswa ke Excel/Word. Navbar-nya unik: **awalnya tersembunyi, lalu muncul seperti kaca bening (glassmorphism) saat kursor mendekati area atas layar atau ketika scroll ke atas**.
+
+## Fitur Utama
 
 | Fitur | Deskripsi |
-|-------|------------|
-| **Registrasi Mahasiswa** | Form lengkap (NIM, nama, alamat, jenis kelamin, tanggal lahir, password) dengan validasi dan notifikasi sukses. Data langsung tersimpan di `localStorage`. |
-| **Dashboard CRUD** | Tampilkan daftar mahasiswa, tambah, edit, hapus. Pencarian berdasarkan NIM/nama. Filter berdasarkan jenis kelamin. |
-| **Ekspor Data** | Tombol **Export Excel** (file `.xlsx`) dan **Export Word** (file `.doc`) – semua data mahasiswa diekspor. |
-| **Infinite Scroll** | Di halaman dashboard, data dimuat secara bertahap saat pengguna scroll ke bawah (tidak perlu tombol paginasi). |
-| **Navbar Glassmorphism** | Navbar transparan seperti kaca, muncul saat kursor di area atas (≤100px) atau saat scroll ke atas. Setelah 1,5 detik tanpa interaksi, navbar menghilang kembali. |
+|-------|-----------|
+| **Registrasi Mahasiswa** | Form lengkap (NIM, nama, alamat, jenis kelamin, tanggal lahir, password) dengan validasi client-side. Data tersimpan di `localStorage`. |
+| **Dashboard CRUD** | Tampilkan daftar mahasiswa, tambah (via modal), edit (via modal dengan data terisi), hapus (dengan konfirmasi). |
+| **Pencarian & Filter** | Cari berdasarkan NIM/nama secara real-time. Filter berdasarkan jenis kelamin (Laki-laki/Perempuan). |
+| **Pagination** | Data ditampilkan per halaman (5 baris) dengan tombol Sebelumnya/Berikutnya. |
+| **Kartu Statistik** | 4 kartu ringkasan: Total Mahasiswa, Laki-laki, Perempuan, Total NIM Unik. |
+| **Ekspor Excel** | Export semua data ke file `.xlsx` menggunakan SheetJS (XLSX). |
+| **Ekspor Word** | Export semua data ke file `.docx` menggunakan FileSaver.js. |
+| **Navbar Glassmorphism** | Navbar transparan seperti kaca, muncul saat kursor di area atas (<=100px) atau saat scroll ke atas. Otomatis sembunyi setelah 1,5 detik. |
+| **Notifikasi Toast** | Popup notifikasi sukses/gagal dengan animasi bounce dan fade-out. |
 | **Responsif** | Tampilan menyesuaikan layar HP, tablet, dan desktop. |
-| **SPA Sederhana** | Navigasi antar halaman (Dashboard / Registrasi) terjadi tanpa reload – konten di‑fetch dan di‑inject ke halaman utama. |
+| **SPA Sederhana** | Navigasi antar halaman tanpa reload - konten di-fetch dan di-inject ke halaman utama. |
+| **XSS Prevention** | Fungsi `escapeHtml()` untuk sanitasi output data di tabel. |
 
-## 🗂️ Struktur Folder
+## Tech Stack
 
+| Teknologi | Keterangan |
+|-----------|------------|
+| HTML5 | Struktur halaman |
+| Tailwind CSS v4.2.4 | Utility-first CSS framework |
+| JavaScript ES6+ | Vanilla JS, tanpa framework |
+| SheetJS (XLSX) | Library export Excel dari CDN |
+| FileSaver.js | Library download file dari CDN |
+| localStorage | Penyimpanan data client-side |
 
+## Struktur Folder
 
-## ⚙️ Cara Menjalankan
+```
+project_UTS/
+├── index.html                       # Entry point SPA
+├── package.json                     # Dependencies npm (Tailwind CSS)
+├── readme.md
+├── src/
+│   ├── components/
+│   │   └── navbarComponents.html    # Komponen navbar glassmorphism
+│   ├── pages/
+│   │   ├── DashboardPages.html      # Halaman dashboard (CRUD, tabel, export)
+│   │   └── loginPages.html          # Halaman registrasi mahasiswa
+│   ├── js/
+│   │   ├── app.js                   # Router SPA, loader halaman
+│   │   ├── dashboard.js             # Logic CRUD, search, filter, pagination, export
+│   │   ├── login.js                 # Handler form registrasi, validasi
+│   │   └── navbar.js                # Logic show/hide navbar
+│   └── style/
+│       ├── input.css                # Entry Tailwind CSS v4
+│       ├── output.css               # Compiled Tailwind CSS
+│       ├── navbar.css               # Styling glassmorphism navbar
+│       ├── login.css                # Styling form registrasi
+│       └── dashboard.css            # Styling dashboard
+```
 
--  **Pastikan Tailwind CSS sudah di‑compile**  
-   Buka terminal di folder `PROJECT_UTS`, jalankan:
+## Cara Menjalankan
+
+1. **Compile Tailwind CSS** (jika ada perubahan):
    ```bash
    npx @tailwindcss/cli -i ./src/style/input.css -o ./src/style/output.css --watch
+   ```
 
-Gunakan Live Server (misalnya ekstensi VS Code "Live Server")
-Buka index.html dengan Live Server – aplikasi akan berjalan di http://localhost:5500.
+2. **Jalankan dengan Live Server** (misal ekstensi VS Code "Live Server"):
+   - Buka `index.html` dengan Live Server
+   - Aplikasi akan berjalan di `http://localhost:5500`
 
-Coba fitur
+3. **Coba fitur**:
+   - Klik menu **Registrasi** → isi data → Submit
+   - Klik **Dashboard** → lihat semua mahasiswa, cari, filter, edit, hapus
+   - Klik **Export Excel** atau **Export Word** untuk mengekspor data
+   - Gerakkan kursor ke pojok atas layar → navbar meluncur turun
 
-    - Klik menu Registrasi → isi data → Submit → data tersimpan.
+## Cara Kerja Source Code
 
-    - Klik Dashboard → lihat semua mahasiswa, cari, filter, edit, hapus.
+### Routing SPA (app.js)
+- `loadPage(url)` mengambil file HTML halaman dengan `fetch()`, lalu memasukkan konten ke `<main id="main-content">`.
+- CSS dari halaman target ditambahkan ke `<head>`.
+- Semua `<script>` (eksternal maupun inline) dieksekusi ulang dengan membuat elemen `<script>` baru.
 
-    - Scroll ke bawah → data tambahan dimuat otomatis (infinite scroll).
+### Navbar Glassmorphism (navbar.css & navbar.js)
+- Navbar tersembunyi secara default (`transform: translateY(-150%)`).
+- Kelas `.show-navbar` mengubahnya menjadi `translateY(0)`.
+- Background semi-transparan + `backdrop-filter: blur(12px)` menciptakan efek kaca.
+- Muncul saat: kursor di area atas (<=100px) ATAU scroll ke atas.
+- Timer 1,5 detik untuk otomatis menghilang.
 
-    - Gerakkan kursor ke pojok atas layar → navbar meluncur turun seperti kaca.
+### LocalStorage
+- Data mahasiswa disimpan di `localStorage` dengan kunci `mahasiswaList`.
+- Setiap operasi (tambah, edit, hapus) langsung memanggil `saveToLocalStorage()`.
+- Data berupa JSON: `{ nim, nama, alamat, jk, ttl, password }`.
 
+### Ekspor Excel & Word
+- **Excel**: SheetJS (XLSX) mengubah array data menjadi worksheet, lalu ditulis sebagai file `.xlsx`.
+- **Word**: String HTML berisi tabel, disimpan sebagai blob dengan tipe `application/msword`, di-download via FileSaver.js.
 
-
-
-Penjelasan Penting dari Source Code
-    Routing SPA tanpa reload (app.js)
-    Menggunakan fetch() untuk mengambil file HTML halaman (DashboardPages.html atau loginPages.html).
-    Hasil fetch dimasukkan ke <main id="main-content">, kemudian semua <script> di halaman tersebut dieksekusi ulang.
-    Mengapa perlu dieksekusi ulang? Karena script yang dimuat secara dinamis tidak berjalan otomatis; kita harus membuat elemen <script> baru dan menambahkannya ke DOM.
-    CSS dari halaman yang dimuat juga ditambahkan ke <head> agar styling ikut terbawa.
-
-        // app.js (potongan)
-    async function loadPage(url) {
-        const res = await fetch(url);
-        const html = await res.text();
-        const doc = new DOMParser().parseFromString(html, 'text/html');
-        // ambil CSS dari head halaman target
-        doc.head.querySelectorAll('link[rel="stylesheet"]').forEach(style => {
-            if (!document.querySelector(`link[href="${style.href}"]`))
-                document.head.appendChild(style.cloneNode());
-        });
-        contentDiv.innerHTML = doc.body.innerHTML;
-        // Jalankan ulang script ...
-    }
-
-    Navbar glassmorphism dengan efek muncul/hilang (navbar.css & navbar.js)
-    CSS : .navbar-scrolled diubah namanya menjadi .show-navbar. Saat kelas ini ada, transform: translateY(0) → navbar turun. Saat kelas tidak ada, transform: translateY(-150%) → tersembunyi di atas.
-    Background: rgba(255,255,255,0.25) + backdrop-filter: blur(12px) menghasilkan efek kaca buram.
-    Bentuk kapsul: border-radius: 9999px.
-    JavaScript : showNavbar() menambah kelas show-navbar dan mengatur timer 1,5 detik untuk menghapusnya.
-    Trigger muncul : mousemove dengan e.clientY <= 100 (kursor di area atas) atau scroll ke atas (window.scrollY < lastScrollY).
-
-    Infinite Scroll di Dashboard (dashboard.js)
-    Prinsip : Mengamati posisi scroll. Saat scrollTop + windowHeight >= document.documentElement.scrollHeight - 300, panggil loadMoreData().
-    loadMoreData() mengambil data berikutnya dari filteredData (hasil filter/search) berdasarkan currentPage dan rowsPerPage, lalu menambahkan baris ke tabel dengan appendRows().
-    Setelah semua data dimuat, tampilkan pesan "Semua data sudah ditampilkan".
-    Keuntungan : Pengalaman pengguna lebih mulus, tidak perlu mengklik tombol paginasi.
-
-    LocalStorage sebagai "database" sementara
-    Data mahasiswa disimpan di localStorage dengan kunci mahasiswaList.
-    Fungsi loadData() membaca dari localStorage; jika kosong, inisialisasi array kosong.
-    Setiap operasi tambah, edit, hapus akan memanggil saveToLocalStorage().
-    Catatan : Karena localStorage hanya bisa menyimpan string, kita gunakan JSON.stringify() dan JSON.parse().
-
-    Ekspor Excel dan Word
-    Excel : menggunakan library SheetJS (XLSX). Data diubah menjadi worksheet, lalu disimpan sebagai file .xlsx.
-    Word : membuat string HTML berisi tabel, lalu disimpan sebagai blob dengan tipe application/msword. Menggunakan FileSaver.js untuk trigger download.
-    Penting : Kedua library diambil dari CDN, jadi pastikan koneksi internet aktif.
-
-    Keamanan sederhana (XSS prevention)
-    Di dashboard.js ada fungsi escapeHtml() yang mengganti karakter <, >, & dengan entitas HTML. Ini mencegah pengguna jahat menyisipkan kode HTML/JavaScript melalui input (misalnya nama <script>alert('xss')</script>).
-
-    Kesimpulan:
-    Proyek ini menunjukkan bagaimana membangun web aplikasi fungsional yang modern, responsif, dan mudah dikelola hanya dengan HTML, CSS (Tailwind), dan JavaScript vanilla. Tanpa framework berat, namun fitur yang dihasilkan sudah cukup mumpuni untuk kebutuhan manajemen data sederhana.
-    Jika ada pertanyaan lebih lanjut atau ingin mengembangkan fitur lain (misalnya autentikasi, koneksi ke backend), struktur kode ini sudah sangat siap untuk dikembangkan lebih lanjut.
-
-
+### Keamanan (XSS Prevention)
+- Fungsi `escapeHtml()` di `dashboard.js` mengganti karakter `<`, `>`, `&` dengan entitas HTML untuk mencegah injeksi kode melalui input pengguna.

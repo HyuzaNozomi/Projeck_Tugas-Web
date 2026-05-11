@@ -1,7 +1,70 @@
 /* Custom style untuk dashboard mahasiswa */
+
+/* Animasi fadeOut untuk notifikasi */
+@keyframes fadeOut {
+    0% { 
+        opacity: 1; 
+        transform: translateX(-50%) translateY(-50%); 
+    }
+    100% { 
+        opacity: 0; 
+        transform: translateX(-50%) translateY(-70%); 
+    }
+}
 .tab-filter, button {
     transition: all 0.2s ease;
 }
+
 #modal {
     transition: opacity 0.2s;
+}
+
+/* Animasi modal fadeIn */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: scale(0.95);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+.animate-fadeIn {
+    animation: fadeIn 0.3s ease-out;
+}
+
+/* Styling untuk password input */
+#password {
+    padding-right: 2.75rem;
+}
+
+#password:focus {
+    border-color: rgb(99, 102, 241);
+}
+
+/* Improvement untuk form inputs */
+input[type="text"],
+input[type="password"],
+textarea,
+select {
+    font-size: 1rem;
+}
+
+input[type="text"]:disabled,
+input[type="password"]:disabled {
+    background-color: rgb(249, 250, 251);
+    cursor: not-allowed;
+}
+
+/* Modal responsif */
+@media (max-width: 640px) {
+    #modal {
+        padding: 1rem;
+    }
+    
+    .bg-white.rounded-2xl {
+        max-width: 100% !important;
+    }
 }

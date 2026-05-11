@@ -9,9 +9,11 @@
     <!-- Custom CSS untuk form -->
     <link href="./src/style/login.css" rel="stylesheet">
 </head>
-    <body>
-    <div class="flex items-center justify-center min-h-[calc(100vh-120px)] p-4 bg-gradient-to-r from-neutral-900 to-neutral-200">
-        <div class="max-w-xl w-full bg-white/90 backdrop-blur-sm rounded-2xl shadow-2xl p-8 border border-white/30">
+    <body class="bg-gray-50">
+
+    <div class="flex items-center justify-center min-h-[calc(100dvh-7rem)] p-4">
+        <div class="max-w-xl w-full bg-white rounded-2xl shadow-xl p-8 border border-gray-200">
+
         <div class="text-center mb-8">
             <h1 class="text-3xl font-extrabold text-gray-800">Registrasi Mahasiswa</h1>
             <p class="text-gray-500 mt-2">Silakan isi data diri Anda dengan lengkap</p>
@@ -80,9 +82,11 @@
             <!-- Password -->
             <div>
                 <label for="password" class="block text-sm font-semibold text-gray-700 mb-1">Password</label>
-                <input type="password" id="password" name="password" required 
-                       class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition"
-                       placeholder="Minimal 6 karakter">
+                <div>
+                    <input type="password" id="password" name="password" required 
+                           class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition"
+                           placeholder="Minimal 6 karakter">
+                </div>
             </div>
 
             <!-- Submit Button -->
@@ -94,10 +98,11 @@
             </div>
         </form>
 
-        <!-- Tempat notifikasi -->
-        <div id="notification" class="mt-6 text-center text-sm hidden"></div>
         </div>
     </div>
+
+    <!-- Notifikasi Toast Modern -->
+    <div id="notification" class="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-[9999] hidden"></div>
 
     <!-- JavaScript eksternal -->
     <script src="./src/js/login.js"></script>
