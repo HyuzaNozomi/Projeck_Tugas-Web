@@ -149,7 +149,17 @@ async function initApp() {
         });
     });
 
-    // 4. Buka halaman Dashboard sebagai halaman pertama
+    // 4. Pasang event listener ke tombol hamburger (toggle menu mobile)
+    waitForElement('menu-btn', (btn) => {
+        btn.addEventListener('click', () => {
+            const menu = document.getElementById('menu');
+            if (menu) {
+                menu.classList.toggle('hidden');
+            }
+        });
+    });
+
+    // 5. Buka halaman Dashboard sebagai halaman pertama
     loadPage('./src/pages/DashboardPages.html');
 }
 
