@@ -91,6 +91,18 @@ async function loadPage(url) {
 // Biar fungsi loadPage bisa dipanggil dari file JS lain
 window.loadPage = loadPage;
 
+// Tutup menu mobile
+function closeMobileMenu() {
+    const menu = document.getElementById('menu');
+    const navbar = document.getElementById('navbar');
+    if (menu && menu.classList.contains('open')) {
+        menu.classList.remove('open');
+    }
+    if (navbar && navbar.classList.contains('mobile-menu-open')) {
+        navbar.classList.remove('mobile-menu-open');
+    }
+}
+
 // Gulir halaman ke atas dengan efek smooth
 function scrollToTop() {
     window.scrollTo({
@@ -132,20 +144,14 @@ async function initApp() {
         link.addEventListener('click', (e) => {
             e.preventDefault();
             loadPage('./src/pages/DashboardPages.html');
-            const menu = document.getElementById('menu');
-            if (menu && !menu.classList.contains('hidden')) {
-                menu.classList.add('hidden');
-            }
+            closeMobileMenu();
         });
     });
     waitForElement('nav-login', (link) => { 
         link.addEventListener('click', (e) => {
             e.preventDefault();
             loadPage('./src/pages/loginPages.html');
-            const menu = document.getElementById('menu');
-            if (menu && !menu.classList.contains('hidden')) {
-                menu.classList.add('hidden');
-            }
+            closeMobileMenu();
         });
     });
 
@@ -153,8 +159,13 @@ async function initApp() {
     waitForElement('menu-btn', (btn) => {
         btn.addEventListener('click', () => {
             const menu = document.getElementById('menu');
+            const navbar = document.getElementById('navbar');
             if (menu) {
-                menu.classList.toggle('hidden');
+                menu.classList.toggle('open');
+                if (navbar) {
+                    navbar.classList.toggle('mobile-menu-open');
+                    navbar.classList.add('show-navbar');
+                }
             }
         });
     });
