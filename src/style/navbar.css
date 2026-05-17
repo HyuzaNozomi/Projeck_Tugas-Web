@@ -1,54 +1,183 @@
-/* Navbar kaca (glassmorphism) - bening, blur, bentuk kapsul */
-#navbar {
+/* ============================================
+   NAVBAR CSS
+   Glassmorphism navbar dengan penjelasan detail
+   ============================================ */
+
+/* NAVBAR GLASSMORPHIC - Navbar utama dengan efek kaca */
+.navbar-glassmorphic {
     position: fixed;
-    top: 16px;
-    left: 16px;
-    right: 16px;
-    z-index: 50;
-    /* Latar bening transparan seperti kaca */
-    background-color: rgba(255, 255, 255, 0.25);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    border-radius: 9999px;              /* bentuk kapsul */
+    top: 1rem;  /* 16px - top-4 */
+    left: 1rem;  /* 16px - left-4 */
+    right: 1rem;  /* 16px - right-4 */
+    z-index: 50;  /* z-50 */
+    
+    /* Efek glassmorphism (kaca bening dengan blur) */
+    background-color: rgba(255, 255, 255, 0.25);  /* Transparansi 25% */
+    backdrop-filter: blur(12px);  /* Blur efek background */
+    -webkit-backdrop-filter: blur(12px);  /* Kompatibilitas Safari */
+    
+    /* Border kaca */
     border: 1px solid rgba(255, 255, 255, 0.4);
+    
+    /* Border radius untuk bentuk kapsul */
+    border-radius: 9999px;  /* rounded-full */
+    
+    /* Shadow untuk depth */
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
     
-    /* Efek muncul/hilang */
+    /* Animasi muncul/hilang */
     transform: translateY(-150%);
     transition: transform 0.3s cubic-bezier(0.2, 0.9, 0.4, 1.1);
 }
 
-/* Saat navbar muncul */
-#navbar.show-navbar {
+/* NAVBAR SHOW - Saat navbar ditampilkan */
+.navbar-glassmorphic.show-navbar {
     transform: translateY(0);
 }
 
-/* Saat tersembunyi, agar tidak mengganggu interaksi */
-#navbar:not(.show-navbar) {
+/* NAVBAR HIDDEN - Saat navbar tersembunyi (pointer events disabled) */
+.navbar-glassmorphic:not(.show-navbar) {
     pointer-events: none;
 }
 
-/* Warna teks dan link (gelap agar kontras dengan latar bening) */
-.brand-logo {
-    color: #1e293b;
-    font-weight: bold;
-    text-shadow: 0 1px 1px rgba(255,255,255,0.3);
-    transition: color 0.2s;
-}
-.nav-link {
-    color: #1f2937;
-    transition: all 0.2s;
-    padding: 0.5rem 1rem;
-    border-radius: 0.5rem;
-}
-.nav-link:hover {
-    color: #000000;
-    background-color: rgba(255, 255, 255, 0.5);
+/* NAVBAR SCROLLED - Efek saat page di-scroll */
+.navbar-glassmorphic.navbar-scrolled {
+    background-color: rgba(255, 255, 255, 0.4);  /* Lebih solid */
+    backdrop-filter: blur(16px);  /* Blur lebih kuat */
+    border-color: rgba(255, 255, 255, 0.6);  /* Border lebih terang */
 }
 
-/* Opsional: efek saat discroll (misal sedikit lebih solid) */
-#navbar.navbar-scrolled {
-    background-color: rgba(255, 255, 255, 0.4);
-    backdrop-filter: blur(16px);
-    border-color: rgba(255, 255, 255, 0.6);
+/* NAVBAR CONTAINER - Wrapper untuk konten navbar */
+.navbar-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    padding: 0.75rem 1rem;  /* py-3 px-4 */
+    max-width: 100%;
+    margin: 0 auto;
+}
+
+/* BRAND LOGO - Logo aplikasi */
+.brand-logo {
+    color: #1e293b;  /* slate-800 */
+    font-weight: bold;
+    font-size: 1.25rem;  /* text-xl */
+    text-decoration: none;
+    letter-spacing: 0.025em;  /* tracking-wide */
+    text-shadow: 0 1px 1px rgba(255, 255, 255, 0.3);
+    transition: color 0.2s ease;
+}
+
+.brand-logo:hover {
+    color: #0f172a;  /* slate-900 */
+}
+
+/* MENU BUTTON - Tombol hamburger */
+.menu-btn {
+    display: none;  /* Tersembunyi di desktop */
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 0.5rem;  /* p-2 */
+    border-radius: 0.5rem;  /* rounded-lg */
+    transition: background-color 0.2s ease;
+    color: #1e293b;  /* text-gray-800 */
+}
+
+.menu-btn:hover {
+    background-color: rgba(255, 255, 255, 0.3);  /* hover:bg-white/30 */
+}
+
+/* Tampilkan menu button di mobile */
+@media (max-width: 768px) {
+    .menu-btn {
+        display: block;
+    }
+}
+
+/* NAVBAR MENU - Menu items container */
+.navbar-menu {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;  /* space-y-2 */
+    margin-top: 1rem;  /* mt-4 */
+}
+
+/* Menu visible di desktop */
+@media (min-width: 768px) {
+    .navbar-menu {
+        width: auto;
+        flex-direction: row;
+        margin-top: 0;  /* md:mt-0 */
+        gap: 0.25rem;  /* md:space-x-1 */
+    }
+}
+
+/* HIDDEN CLASS - Sembunyikan menu di mobile */
+.navbar-menu.hidden {
+    display: none;
+}
+
+/* NAV LINK - Link navigasi */
+.nav-link {
+    display: block;  /* block di mobile */
+    padding: 0.5rem 1rem;  /* px-4 py-2 */
+    color: #1f2937;  /* text-gray-700 */
+    text-decoration: none;
+    font-size: 0.875rem;  /* text-sm */
+    font-weight: 500;  /* font-medium */
+    border-radius: 0.5rem;  /* rounded-lg */
+    transition: all 0.2s ease;
+}
+
+.nav-link:hover {
+    color: #000000;  /* text-black */
+    background-color: rgba(255, 255, 255, 0.5);  /* semi-transparent white */
+}
+
+/* Di desktop, nav-link display inline */
+@media (min-width: 768px) {
+    .nav-link {
+        display: inline-block;
+    }
+}
+
+/* ICON SIZING - SVG icon sizing */
+.w-6 {
+    width: 1.5rem;
+    height: 1.5rem;
+}
+
+/* RESPONSIVE BREAKPOINTS */
+
+/* Mobile (< 640px) */
+@media (max-width: 640px) {
+    .navbar-container {
+        padding: 0.5rem 1rem;
+    }
+
+    .brand-logo {
+        font-size: 1rem;
+    }
+
+    .navbar-menu {
+        margin-top: 0.5rem;
+    }
+}
+
+/* Tablet (768px - 1024px) */
+@media (min-width: 768px) {
+    .navbar-menu {
+        display: flex !important;
+    }
+}
+
+/* Large screens (1024px+) */
+@media (min-width: 1024px) {
+    .navbar-container {
+        max-width: 90%;
+        margin: 0 auto;
+    }
 }

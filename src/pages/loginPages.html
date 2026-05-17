@@ -4,95 +4,94 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Registrasi Mahasiswa</title>
-    <!-- Tailwind CSS hasil compile -->
-    <link href="./src/style/output.css" rel="stylesheet">
+    <!-- CSS Utama (menggantikan Tailwind CSS) -->
+    <link href="./src/style/styles.css" rel="stylesheet">
     <!-- Custom CSS untuk form -->
     <link href="./src/style/login.css" rel="stylesheet">
 </head>
-    <body class="bg-gray-50">
+    <body style="background-color: var(--gray-50);">
 
-    <div class="flex items-center justify-center min-h-[calc(100dvh-7rem)] p-4">
-        <div class="max-w-xl w-full bg-white rounded-2xl shadow-xl p-8 border border-gray-200">
+    <div class="login-container">
+        <div class="login-card">
 
-        <div class="text-center mb-8">
-            <h1 class="text-3xl font-extrabold text-gray-800">Registrasi Mahasiswa</h1>
-            <p class="text-gray-500 mt-2">Silakan isi data diri Anda dengan lengkap</p>
+        <div class="login-header">
+            <h1 class="login-title">Registrasi Mahasiswa</h1>
+            <p class="login-subtitle">Silakan isi data diri Anda dengan lengkap</p>
         </div>
 
-        <form id="registerForm" class="space-y-5">
+        <form id="registerForm" class="login-form">
             <!-- NIM -->
-            <div>
-                <label for="nim" class="block text-sm font-semibold text-gray-700 mb-1">NIM</label>
+            <div class="form-group">
+                <label for="nim" class="form-label">NIM</label>
                 <input type="text" id="nim" name="nim" required 
-                       class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition"
+                       class="form-input"
                        placeholder="Contoh: 202412004">
             </div>
 
             <!-- Nama Lengkap -->
-            <div>
-                <label for="nama" class="block text-sm font-semibold text-gray-700 mb-1">Nama Lengkap</label>
+            <div class="form-group">
+                <label for="nama" class="form-label">Nama Lengkap</label>
                 <input type="text" id="nama" name="nama" required 
-                       class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition"
+                       class="form-input"
                        placeholder="Contoh: Hana">
             </div>
 
             <!-- Alamat -->
-            <div>
-                <label for="alamat" class="block text-sm font-semibold text-gray-700 mb-1">Alamat</label>
+            <div class="form-group">
+                <label for="alamat" class="form-label">Alamat</label>
                 <textarea id="alamat" name="alamat" rows="2" required 
-                          class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition"
+                          class="form-input"
                           placeholder="Jl. GajahMada No.02, Kota Bontang"></textarea>
             </div>
 
             <!-- Jenis Kelamin (hanya Laki-laki & Perempuan) -->
-            <div>
-                <label class="block text-sm font-semibold text-gray-700 mb-2">Jenis Kelamin</label>
-                <div class="flex gap-6">
-                    <label class="flex items-center gap-2 cursor-pointer">
-                        <input type="radio" name="jk" value="Laki-laki" checked class="w-4 h-4 text-indigo-600 focus:ring-indigo-500">
-                        <span class="text-gray-700">Laki-laki</span>
+            <div class="form-group">
+                <label class="form-label">Jenis Kelamin</label>
+                <div class="radio-group">
+                    <label class="radio-label">
+                        <input type="radio" name="jk" value="Laki-laki" checked>
+                        <span>Laki-laki</span>
                     </label>
-                    <label class="flex items-center gap-2 cursor-pointer">
-                        <input type="radio" name="jk" value="Perempuan" class="w-4 h-4 text-indigo-600 focus:ring-indigo-500">
-                        <span class="text-gray-700">Perempuan</span>
+                    <label class="radio-label">
+                        <input type="radio" name="jk" value="Perempuan">
+                        <span>Perempuan</span>
                     </label>
                 </div>
             </div>
 
             <!-- Tanggal Lahir -->
-            <div>
-                <label class="block text-sm font-semibold text-gray-700 mb-1">Tanggal Lahir</label>
-                <div class="grid grid-cols-3 gap-2">
-                    <select id="tanggal" name="tanggal" required class="px-3 py-2 border border-gray-300 rounded-lg bg-white focus:ring-indigo-500">
+            <div class="form-group">
+                <label class="form-label">Tanggal Lahir</label>
+                <div class="date-select-group">
+                    <select id="tanggal" name="tanggal" required class="form-select">
                         <option value="">Tanggal</option>
                     </select>
-                    <select id="bulan" name="bulan" required class="px-3 py-2 border border-gray-300 rounded-lg bg-white focus:ring-indigo-500">
+                    <select id="bulan" name="bulan" required class="form-select">
                         <option value="">Bulan</option>
                         <option value="01">Januari</option><option value="02">Februari</option><option value="03">Maret</option>
                         <option value="04">April</option><option value="05">Mei</option><option value="06">Juni</option>
                         <option value="07">Juli</option><option value="08">Agustus</option><option value="09">September</option>
                         <option value="10">Oktober</option><option value="11">November</option><option value="12">Desember</option>
                     </select>
-                    <select id="tahun" name="tahun" required class="px-3 py-2 border border-gray-300 rounded-lg bg-white focus:ring-indigo-500">
+                    <select id="tahun" name="tahun" required class="form-select">
                         <option value="">Tahun</option>
                     </select>
                 </div>
             </div>
 
             <!-- Password -->
-            <div>
-                <label for="password" class="block text-sm font-semibold text-gray-700 mb-1">Password</label>
+            <div class="form-group">
+                <label for="password" class="form-label">Password</label>
                 <div>
                     <input type="password" id="password" name="password" required 
-                           class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition"
+                           class="form-input"
                            placeholder="Minimal 6 karakter">
                 </div>
             </div>
 
             <!-- Submit Button -->
-            <div class="pt-4">
-                <button type="submit" 
-                        class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 rounded-lg transition duration-200 transform hover:scale-[1.02] shadow-md">
+            <div class="form-button-wrapper">
+                <button type="submit" class="btn-submit">
                     Submit
                 </button>
             </div>
@@ -102,7 +101,7 @@
     </div>
 
     <!-- Notifikasi Toast Modern -->
-    <div id="notification" class="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-[9999] hidden"></div>
+    <div id="notification" class="notification-toast"></div>
 
     <!-- JavaScript eksternal -->
     <script src="./src/js/login.js"></script>

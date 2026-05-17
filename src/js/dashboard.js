@@ -42,6 +42,7 @@ const nimInput = document.getElementById("nim");
 const namaInput = document.getElementById("nama");
 const alamatInput = document.getElementById("alamat");
 const passwordInput = document.getElementById("password");
+const togglePasswordBtn = document.getElementById("togglePassword");
 const tglSelect = document.getElementById("tgl");
 const thnSelect = document.getElementById("thn");
 const exportExcelBtn = document.getElementById("exportExcelBtn");
@@ -164,18 +165,6 @@ function appendRows(rows) {
     tableBody.insertAdjacentHTML('beforeend', html);
 }
 
-// Bersihin string dari karakter berbahaya (&, <, >) biar gak bisa XSS
-// Contoh: "<script>" jadi "&lt;script&gt;"
-function escapeHtml(str) {
-    if (!str) return '';
-    return str.replace(/[&<>]/g, function(m) {
-        if (m === '&') return '&amp;';
-        if (m === '<') return '&lt;';
-        if (m === '>') return '&gt;';
-        return m;
-    });
-}
-
 // Ambil data halaman tertentu dari filteredData, terus tampilin di tabel
 // Pake setTimeout 300ms biar ada efek loading (simulasi)
 function loadMoreData() {
@@ -207,11 +196,15 @@ function loadMoreData() {
 function updatePaginationInfo() {
     const totalItems = filteredData.length;
     const totalPages = Math.ceil(totalItems / rowsPerPage);
-    const start = (currentPage - 1) * rowsPerPage + 1;
-    const end = Math.min(currentPage * rowsPerPage, totalItems);
     
     if (infoJumlah) {
-        infoJumlah.textContent = `Menampilkan ${start} sampai ${end} dari ${totalItems} data`;
+        if (totalItems === 0) {
+            infoJumlah.textContent = 'Tidak ada data';
+        } else {
+            const start = (currentPage - 1) * rowsPerPage + 1;
+            const end = Math.min(currentPage * rowsPerPage, totalItems);
+            infoJumlah.textContent = `Menampilkan ${start} sampai ${end} dari ${totalItems} data`;
+        }
     }
     
     if (pageIndicator) {
@@ -267,10 +260,10 @@ function updateStatsCards() {
     const perempuan = dataMahasiswa.filter(m => m.jk === "Perempuan").length;
     const unique = new Set(dataMahasiswa.map(m => m.nim)).size;
     statsContainer.innerHTML = `
-        <div class="bg-white rounded-xl shadow p-5 border"><p class="text-gray-500 text-sm">Total Mahasiswa</p><p class="text-3xl font-bold">${total}</p></div>
-        <div class="bg-white rounded-xl shadow p-5 border"><p class="text-gray-500 text-sm">Laki-laki</p><p class="text-3xl font-bold">${laki}</p></div>
-        <div class="bg-white rounded-xl shadow p-5 border"><p class="text-gray-500 text-sm">Perempuan</p><p class="text-3xl font-bold">${perempuan}</p></div>
-        <div class="bg-white rounded-xl shadow p-5 border"><p class="text-gray-500 text-sm">Total NIM Unik</p><p class="text-3xl font-bold">${unique}</p></div>
+        <div class="bg-white rounded-xl shadow p-5 border"><p class="text-gray-500 text-sm">Total Mahasiswa</p><p class="text-3xl font-bold" style="text-align: center;">${total}</p></div>
+        <div class="bg-white rounded-xl shadow p-5 border"><p class="text-gray-500 text-sm">Laki-laki</p><p class="text-3xl font-bold" style="text-align: center;">${laki}</p></div>
+        <div class="bg-white rounded-xl shadow p-5 border"><p class="text-gray-500 text-sm">Perempuan</p><p class="text-3xl font-bold" style="text-align: center;">${perempuan}</p></div>
+        <div class="bg-white rounded-xl shadow p-5 border"><p class="text-gray-500 text-sm">Total NIM Unik</p><p class="text-3xl font-bold" style="text-align: center;">${unique}</p></div>
     `;
 }
 
@@ -310,11 +303,15 @@ function openEditModal(nim) {
     else document.querySelector('input[name="jk"][value="Perempuan"]').checked = true;
     const parts = mhs.ttl.split(" ");
     if (parts.length === 3) {
-        tglSelect.value = parts[0];
+        if (tglSelect.querySelector(`option[value="${escapeHtml(parts[0])}"]`)) {
+            tglSelect.value = parts[0];
+        }
         const bulanMap = {Jan:"01",Feb:"02",Mar:"03",Apr:"04",Mei:"05",Jun:"06",Jul:"07",Ags:"08",Sep:"09",Okt:"10",Nov:"11",Des:"12"};
         const blnNum = bulanMap[parts[1]];
         if (blnNum) document.getElementById("bln").value = blnNum;
-        thnSelect.value = parts[2];
+        if (thnSelect.querySelector(`option[value="${escapeHtml(parts[2])}"]`)) {
+            thnSelect.value = parts[2];
+        }
     }
     passwordInput.value = mhs.password;
     modal.classList.remove("hidden");
@@ -347,30 +344,21 @@ function closeModal() {
     document.head.appendChild(style);
 })();
 
+function escapeHtml(text) {
+    const div = document.createElement('div');
+    div.appendChild(document.createTextNode(text));
+    return div.innerHTML;
+}
+
 function showNotification(message, isSuccess = true) {
-    const container = dashboardNotification;
-    const iconBg = isSuccess ? 'bg-emerald-100' : 'bg-red-100';
-    const iconColor = isSuccess ? 'text-emerald-600' : 'text-red-600';
+    const container = document.getElementById('dashboardNotification');
     const accentColor = isSuccess ? 'border-l-emerald-500' : 'border-l-red-500';
     const progressColor = isSuccess ? 'bg-emerald-500' : 'bg-red-500';
 
-    const iconSvg = isSuccess ? `
-        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
-        </svg>
-    ` : `
-        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"/>
-        </svg>
-    `;
-
     container.innerHTML = `
-        <div class="flex items-start gap-3.5 bg-white ${accentColor} border-l-4 p-4 rounded-xl shadow-lg backdrop-blur-md min-w-[340px] max-w-[400px] w-fit mx-auto t-visible">
-            <div class="${iconBg} ${iconColor} p-2 rounded-full shrink-0">
-                ${iconSvg}
-            </div>
+        <div class="flex items-start gap-3.5 bg-white ${accentColor} border-l-4 p-4 rounded-xl shadow-lg backdrop-blur-md min-w-85 max-w-100 w-fit mx-auto t-visible">
             <div class="flex-1 min-w-0 pt-0.5">
-                <p class="text-sm font-semibold text-gray-800 leading-snug">${message}</p>
+                <p class="text-sm font-semibold text-gray-800 leading-snug">${escapeHtml(message)}</p>
                 <div class="mt-2.5 h-1.5 rounded-full bg-gray-100 overflow-hidden">
                     <div class="h-full ${progressColor} rounded-full t-progress" style="width:100%"></div>
                 </div>
@@ -383,6 +371,7 @@ function showNotification(message, isSuccess = true) {
         </div>
     `;
 
+    clearTimeout(Number(container.dataset.tid));
     container.classList.remove('hidden');
     const toast = container.firstElementChild;
 
@@ -430,6 +419,14 @@ if (form) {
             showNotification('Semua field harus diisi!', false);
             return;
         }
+        if (password.length < 6) {
+            showNotification('Password minimal 6 karakter!', false);
+            return;
+        }
+        if (!/^\d{8,}$/.test(nim)) {
+            showNotification('NIM harus berupa angka minimal 8 digit!', false);
+            return;
+        }
         const newData = { nim, nama, alamat, jk, ttl, password };
         let result;
         if (editNim === "") {
@@ -458,11 +455,9 @@ if (searchInput) {
 document.querySelectorAll(".tab-filter").forEach(btn => {
     btn.addEventListener("click", () => {
         document.querySelectorAll(".tab-filter").forEach(b => {
-            b.classList.remove("bg-indigo-600", "text-white");
-            b.classList.add("text-gray-600");
+            b.classList.remove("tab-filter-active");
         });
-        btn.classList.remove("text-gray-600");
-        btn.classList.add("bg-indigo-600", "text-white");
+        btn.classList.add("tab-filter-active");
         currentFilter = btn.dataset.filter;
         resetAndReload();
     });
@@ -514,7 +509,7 @@ if (exportWordBtn) {
                 html += `<tr><td>${escapeHtml(m.nim)}</td><td>${escapeHtml(m.nama)}</td><td>${escapeHtml(m.alamat)}</td><td>${escapeHtml(m.jk)}</td><td>${escapeHtml(m.ttl)}</td><td>${escapeHtml(m.password)}</td></tr>`;
             });
             html += `</tbody></table><p style="margin-top:20px;color:#666;font-size:12px;">Generated: ${new Date().toLocaleString()}</p></body></html>`;
-            const blob = new Blob([html], { type: "application/vnd.openxmlformats-officedocument.wordprocessingml.document" });
+            const blob = new Blob([html], { type: "application/msword" });
             const filename = `Data_Mahasiswa_${new Date().getFullYear()}${String(new Date().getMonth()+1).padStart(2,'0')}${String(new Date().getDate()).padStart(2,'0')}_${String(new Date().getHours()).padStart(2,'0')}${String(new Date().getMinutes()).padStart(2,'0')}${String(new Date().getSeconds()).padStart(2,'0')}.docx`;
             saveAs(blob, filename);
             showNotification("Ekspor Word berhasil!", true);
@@ -522,6 +517,22 @@ if (exportWordBtn) {
             showNotification("Gagal mengekspor Word: " + error.message, false);
             console.error(error);
         }
+    });
+}
+
+// Toggle show/hide password di modal edit
+if (togglePasswordBtn) {
+    togglePasswordBtn.addEventListener("click", () => {
+        const isPassword = passwordInput.type === "password";
+        passwordInput.type = isPassword ? "text" : "password";
+        togglePasswordBtn.innerHTML = isPassword
+            ? `<svg xmlns="http://www.w3.org/2000/svg" class="icon-eye" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21" />
+              </svg>`
+            : `<svg xmlns="http://www.w3.org/2000/svg" class="icon-eye" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                <path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+              </svg>`;
     });
 }
 
@@ -536,7 +547,7 @@ if (openModalBtn) openModalBtn.addEventListener("click", (e) => {
 
 if (closeModalBtn) closeModalBtn.addEventListener("click", closeModal);
 if (cancelModalBtn) cancelModalBtn.addEventListener("click", closeModal);
-window.addEventListener("click", (e) => { if (e.target === modal) closeModal(); });
+
 
 // Tombol pagination (Sebelumnya / Selanjutnya)
 if (prevPageBtn) {
@@ -555,8 +566,15 @@ initDateDropdowns();
 loadData();
 
 
+// AbortController agar listener tidak menumpuk saat navigasi
+const controller = new AbortController();
+window.__pageController = controller;
+const signal = controller.signal;
+
+// Klik di luar modal → tutup modal
+window.addEventListener("click", (e) => { if (e.target === modal) closeModal(); }, { signal });
+
 // DELEGASI EVENT: nangkep klik tombol Edit & Hapus di tabel
-// Pake event delegation di <body> soalnya tombol-tombol itu dibuat dinamis
 document.body.addEventListener('click', (e) => {
     if (e.target.classList.contains('edit-btn')) {
         const nim = e.target.getAttribute('data-nim');
@@ -566,4 +584,4 @@ document.body.addEventListener('click', (e) => {
         const nim = e.target.getAttribute('data-nim');
         deleteMahasiswa(nim);
     }
-});
+}, { signal });

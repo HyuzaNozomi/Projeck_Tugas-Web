@@ -8,10 +8,9 @@
 */
 
 // Ambil file HTML dari server, lalu taruh isinya ke dalam elemen tertentu
-// Contoh: loadComponent('navbar.html', 'navbar-container') -> isi navbar-container dengan navbar.html
 async function loadComponent(url, targetId) {
     try {
-        const response = await fetch(url);
+        const response = await fetch(url + '?t=' + Date.now());
         if (!response.ok) throw new Error(`HTTP ${response.status}`);
         const html = await response.text();
         document.getElementById(targetId).innerHTML = html;
@@ -22,68 +21,74 @@ async function loadComponent(url, targetId) {
     }
 }
 
-// Sebelum ganti halaman, hapus dulu script-script lama yang tertinggal di <body>
-// Biar gak numpuk dan bentrok ama script baru
+// Hapus script lama yang tertinggal di <body>
+// dan batalkan semua event listener dari halaman sebelumnya
 function cleanupPageScripts() {
     document.querySelectorAll('script[data-page-script]').forEach(s => s.remove());
+    if (window.__pageController) {
+        window.__pageController.abort();
+    }
+    window.__pageController = null;
 }
 
-// Fungsi utama: ganti halaman (Dashboard atau Registrasi) tanpa reload
-// Cara kerja:
-// 1. Fetch file HTML dari server
-// 2. Ambil CSS-nya, tambahin ke <head> kalo belum ada
-// 3. Isi #main-content dengan HTML body-nya
-// 4. Jalankan ulang semua <script> biar event listener-nya kepasang
+// Hapus CSS khusus halaman sebelumnya (yang ditandai data-page-css)
+function cleanupPageCSS() {
+    document.querySelectorAll('link[data-page-css]').forEach(el => el.remove());
+}
+
+// Fungsi utama: ganti halaman tanpa reload
 async function loadPage(url) {
     const contentDiv = document.getElementById('main-content');
-    contentDiv.innerHTML = '<div class="text-center text-gray-500 py-20">Memuat...</div>';
+    contentDiv.style.opacity = '0';
+    contentDiv.style.transition = 'opacity 0.2s ease';
+    contentDiv.innerHTML = '<div style="text-align: center; padding: 5rem 0;"><div class="spinner" style="margin: 0 auto 1rem;"></div><p style="color: var(--gray-500);">Memuat...</p></div>';
+
     cleanupPageScripts();
+    cleanupPageCSS();
+
     try {
-        const response = await fetch(url);
+        const response = await fetch(url + '?t=' + Date.now());
         const html = await response.text();
-        
+
         const parser = new DOMParser();
         const doc = parser.parseFromString(html, 'text/html');
-        
-        // Ambil semua CSS dari halaman target, tambahin ke <head> kalo belom ada
-        const styles = doc.head.querySelectorAll('link[rel="stylesheet"]');
-        styles.forEach(style => {
-            const href = style.href;
-            if (!document.querySelector(`link[href="${href}"]`)) {
-                const link = document.createElement('link');
-                link.rel = 'stylesheet';
-                link.href = href;
-                document.head.appendChild(link);
-            }
+
+        // Ambil CSS khusus halaman, tambahkan dengan tanda data-page-css
+        // CSS global (styles.css, navbar.css) dari index.html tidak diutak-atik
+        const globalCSS = ['styles.css', 'navbar.css'];
+        doc.head.querySelectorAll('link[rel="stylesheet"]').forEach(style => {
+            const href = style.getAttribute('href');
+            if (globalCSS.some(c => href && href.includes(c))) return;
+            const link = document.createElement('link');
+            link.rel = 'stylesheet';
+            link.href = href + '?t=' + Date.now();
+            link.setAttribute('data-page-css', '');
+            document.head.appendChild(link);
         });
-        
-        // Isi #main-content dengan HTML dari halaman yang dimuat
+
         contentDiv.innerHTML = doc.body.innerHTML;
 
-        // Jalankan ulang semua script (eksternal maupun inline)
-        // Script yang dimasukin lewat innerHTML gak otomatis jalan,
-        // jadi kita bikin elemen <script> baru trus ditambahin ke <body>
-        const scripts = contentDiv.querySelectorAll('script');
-        for (let script of scripts) {
+        // Jalankan ulang semua script dari halaman yang dimuat
+        contentDiv.querySelectorAll('script').forEach(script => {
+            const newScript = document.createElement('script');
             if (script.src) {
-                const newScript = document.createElement('script');
-                newScript.src = script.src;
+                newScript.src = script.src + '?t=' + Date.now();
                 newScript.async = false;
-                newScript.setAttribute('data-page-script', '');
-                script.remove();
-                document.body.appendChild(newScript);
             } else if (script.textContent) {
-                const newScript = document.createElement('script');
                 newScript.textContent = script.textContent;
-                newScript.setAttribute('data-page-script', '');
-                script.remove();
-                document.body.appendChild(newScript);
             }
-        }
-        
+            newScript.setAttribute('data-page-script', '');
+            script.remove();
+            document.body.appendChild(newScript);
+        });
+
+        // Fade in konten baru
+        requestAnimationFrame(() => { contentDiv.style.opacity = '1'; });
+
         scrollToTop();
     } catch (error) {
-        contentDiv.innerHTML = '<div class="text-center text-red-500 py-20">Gagal memuat halaman.</div>';
+        contentDiv.innerHTML = '<div style="text-align: center; color: var(--red-500); padding: 5rem 0;">Gagal memuat halaman.</div>';
+        contentDiv.style.opacity = '1';
         console.error(error);
     }
 }

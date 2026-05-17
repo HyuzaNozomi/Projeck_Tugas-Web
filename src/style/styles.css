@@ -1,0 +1,609 @@
+/* ============================================
+   FILE: styles.css
+   PENJELASAN: CSS pengganti Tailwind CSS
+   Menggabungkan semua utility CSS dengan penjelasan
+   ============================================ */
+
+/* ============================================
+   1. RESET & BASE STYLES
+   ============================================ */
+
+* {
+    margin: 0;
+    padding: 0;
+    border: 0 solid;
+    box-sizing: border-box;
+}
+
+html, body {
+    height: 100%;
+}
+
+html {
+    -webkit-text-size-adjust: 100%;
+    tab-size: 4;
+    font-family: ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+    line-height: 1.5;
+    -webkit-tap-highlight-color: transparent;
+}
+
+/* ============================================
+   2. WARNA GLOBAL (Color Palette)
+   ============================================ */
+
+:root {
+    /* Gray Colors */
+    --gray-50: #f9fafb;
+    --gray-100: #f3f4f6;
+    --gray-200: #e5e7eb;
+    --gray-300: #d1d5db;
+    --gray-400: #9ca3af;
+    --gray-500: #6b7280;
+    --gray-600: #4b5563;
+    --gray-700: #374151;
+    --gray-800: #1f2937;
+    --gray-900: #111827;
+
+    /* Indigo Colors (Primary) */
+    --indigo-50: #f0f9ff;
+    --indigo-100: #e0e7ff;
+    --indigo-500: #6366f1;
+    --indigo-600: #4f46e5;
+    --indigo-700: #4338ca;
+
+    /* Green Colors */
+    --green-600: #16a34a;
+    --green-700: #15803d;
+
+    /* Blue Colors */
+    --blue-600: #2563eb;
+    --blue-700: #1d4ed8;
+
+    /* Red Colors */
+    --red-500: #ef4444;
+    --red-600: #dc2626;
+    --red-700: #b91c1c;
+    --red-800: #991b1b;
+
+    /* Spacing */
+    --spacing: 0.25rem;
+}
+
+/* ============================================
+   3. TYPOGRAPHY
+   ============================================ */
+
+/* Text sizes */
+.text-xs {
+    font-size: 0.75rem;
+    line-height: 1rem;
+}
+
+.text-sm {
+    font-size: 0.875rem;
+    line-height: 1.25rem;
+}
+
+.text-lg {
+    font-size: 1.125rem;
+    line-height: 1.75rem;
+}
+
+.text-xl {
+    font-size: 1.25rem;
+    line-height: 1.75rem;
+}
+
+.text-2xl {
+    font-size: 1.5rem;
+    line-height: 2rem;
+}
+
+.text-3xl {
+    font-size: 1.875rem;
+    line-height: 2.25rem;
+}
+
+.text-4xl {
+    font-size: 2.25rem;
+    line-height: 2.5rem;
+}
+
+/* Font weights */
+.font-semibold {
+    font-weight: 600;
+}
+
+.font-bold {
+    font-weight: 700;
+}
+
+.font-extrabold {
+    font-weight: 800;
+}
+
+.font-medium {
+    font-weight: 500;
+}
+
+/* Line height */
+.leading-snug {
+    line-height: 1.375;
+}
+
+/* Tracking (letter spacing) */
+.tracking-wide {
+    letter-spacing: 0.025em;
+}
+
+/* ============================================
+   4. COLORS - TEXT
+   ============================================ */
+
+.text-gray-50 { color: var(--gray-50); }
+.text-gray-100 { color: var(--gray-100); }
+.text-gray-200 { color: var(--gray-200); }
+.text-gray-300 { color: var(--gray-300); }
+.text-gray-400 { color: var(--gray-400); }
+.text-gray-500 { color: var(--gray-500); }
+.text-gray-600 { color: var(--gray-600); }
+.text-gray-700 { color: var(--gray-700); }
+.text-gray-800 { color: var(--gray-800); }
+.text-gray-900 { color: var(--gray-900); }
+
+.text-white { color: #ffffff; }
+.text-black { color: #000000; }
+
+.text-indigo-500 { color: var(--indigo-500); }
+.text-indigo-600 { color: var(--indigo-600); }
+
+.text-green-600 { color: var(--green-600); }
+.text-blue-600 { color: var(--blue-600); }
+.text-emerald-600 { color: #059669; }
+
+.text-red-500 { color: var(--red-500); }
+.text-red-600 { color: var(--red-600); }
+
+/* ============================================
+   5. BACKGROUND COLORS
+   ============================================ */
+
+.bg-gray-50 { background-color: var(--gray-50); }
+.bg-gray-100 { background-color: var(--gray-100); }
+.bg-gray-200 { background-color: var(--gray-200); }
+.bg-gray-400 { background-color: var(--gray-400); }
+.bg-gray-500 { background-color: var(--gray-500); }
+.bg-gray-600 { background-color: var(--gray-600); }
+.bg-gray-700 { background-color: var(--gray-700); }
+.bg-gray-800 { background-color: var(--gray-800); }
+.bg-gray-900 { background-color: var(--gray-900); }
+
+.bg-white { background-color: #ffffff; }
+.bg-black { background-color: #000000; }
+
+.bg-indigo-50 { background-color: var(--indigo-50); }
+.bg-indigo-600 { background-color: var(--indigo-600); }
+
+.bg-green-600 { background-color: var(--green-600); }
+.bg-blue-600 { background-color: var(--blue-600); }
+.bg-emerald-100 { background-color: #d1fae5; }
+.bg-red-100 { background-color: #fee2e2; }
+
+.bg-red-500 { background-color: var(--red-500); }
+.bg-red-600 { background-color: var(--red-600); }
+
+/* ============================================
+   6. SPACING - PADDING
+   ============================================ */
+
+.p-2 { padding: 0.5rem; }
+.p-3 { padding: 0.75rem; }
+.p-4 { padding: 1rem; }
+.p-5 { padding: 1.25rem; }
+.p-6 { padding: 1.5rem; }
+.p-8 { padding: 2rem; }
+
+.px-3 { padding-left: 0.75rem; padding-right: 0.75rem; }
+.px-4 { padding-left: 1rem; padding-right: 1rem; }
+.px-6 { padding-left: 1.5rem; padding-right: 1.5rem; }
+
+.py-2 { padding-top: 0.5rem; padding-bottom: 0.5rem; }
+.py-3 { padding-top: 0.75rem; padding-bottom: 0.75rem; }
+.py-4 { padding-top: 1rem; padding-bottom: 1rem; }
+.py-6 { padding-top: 1.5rem; padding-bottom: 1.5rem; }
+
+.pr-3 { padding-right: 0.75rem; }
+.pr-10 { padding-right: 2.5rem; }
+
+.pt-0\.5 { padding-top: 0.125rem; }
+.pt-4 { padding-top: 1rem; }
+.pt-28 { padding-top: 7rem; }
+
+.mb-1 { margin-bottom: 0.25rem; }
+.mb-2 { margin-bottom: 0.5rem; }
+.mb-3 { margin-bottom: 0.75rem; }
+.mb-4 { margin-bottom: 1rem; }
+.mb-6 { margin-bottom: 1.5rem; }
+.mb-8 { margin-bottom: 2rem; }
+
+.mt-2 { margin-top: 0.5rem; }
+.mt-2\.5 { margin-top: 0.625rem; }
+.mt-4 { margin-top: 1rem; }
+
+.gap-2 { gap: 0.5rem; }
+.gap-3 { gap: 0.75rem; }
+.gap-3\.5 { gap: 0.875rem; }
+.gap-4 { gap: 1rem; }
+.gap-6 { gap: 1.5rem; }
+
+/* ============================================
+   7. SIZING
+   ============================================ */
+
+.w-full { width: 100%; }
+.w-4 { width: 1rem; }
+.w-5 { width: 1.25rem; }
+.w-6 { width: 1.5rem; }
+.w-64 { width: 16rem; }
+
+.h-4 { height: 1rem; }
+.h-5 { height: 1.25rem; }
+.h-6 { height: 1.5rem; }
+.h-1\.5 { height: 0.375rem; }
+.h-screen { height: 100vh; }
+
+.min-h-screen { min-height: 100vh; }
+.min-h-[calc(100dvh-7rem)] { min-height: calc(100dvh - 7rem); }
+.min-w-full { min-width: 100%; }
+
+.max-w-xl { max-width: 36rem; }
+.max-w-2xl { max-width: 42rem; }
+.max-w-7xl { max-width: 80rem; }
+.max-w-100 { max-width: 25rem; }
+
+.min-w-85 { min-width: 21.25rem; }
+
+.w-fit { width: fit-content; }
+
+/* ============================================
+   8. DISPLAY & LAYOUT
+   ============================================ */
+
+.block { display: block; }
+.inline-block { display: inline-block; }
+.inline { display: inline; }
+.flex { display: flex; }
+.grid { display: grid; }
+.hidden { display: none; }
+.table { display: table; }
+
+.flex-wrap { flex-wrap: wrap; }
+.flex-col { flex-direction: column; }
+.flex-row { flex-direction: row; }
+
+/* ============================================
+   9. FLEX PROPERTIES
+   ============================================ */
+
+.items-center { align-items: center; }
+.items-start { align-items: flex-start; }
+.items-end { align-items: flex-end; }
+
+.justify-start { justify-content: flex-start; }
+
+.flex-1 { flex: 1 1 0%; }
+.shrink-0 { flex-shrink: 0; }
+.min-w-0 { min-width: 0; }
+.justify-center { justify-content: center; }
+.justify-between { justify-content: space-between; }
+.justify-end { justify-content: flex-end; }
+
+/* ============================================
+   10. GRID PROPERTIES
+   ============================================ */
+
+.grid-cols-1 { grid-template-columns: repeat(1, minmax(0, 1fr)); }
+.grid-cols-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.grid-cols-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.grid-cols-4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+
+.col-span-1 { grid-column: span 1 / span 1; }
+.col-span-2 { grid-column: span 2 / span 2; }
+
+/* ============================================
+   11. BORDERS
+   ============================================ */
+
+.border { border-width: 1px; border-color: var(--gray-300); }
+.border-b { border-bottom-width: 1px; border-color: var(--gray-300); }
+.border-t { border-top-width: 1px; border-color: var(--gray-300); }
+.border-l-4 { border-left-width: 4px; }
+
+.border-gray-200 { border-color: var(--gray-200); }
+.border-gray-300 { border-color: var(--gray-300); }
+.border-gray-400 { border-color: var(--gray-400); }
+.border-gray-500 { border-color: var(--gray-500); }
+.border-gray-600 { border-color: var(--gray-600); }
+
+.border-indigo-500 { border-color: var(--indigo-500); }
+.border-indigo-600 { border-color: var(--indigo-600); }
+
+.border-red-300 { border-color: #fca5a5; }
+.border-red-500 { border-color: var(--red-500); }
+
+.border-l-emerald-500 { border-left-color: #10b981; }
+.border-l-red-500 { border-left-color: var(--red-500); }
+
+/* ============================================
+   12. BORDER RADIUS
+   ============================================ */
+
+.rounded { border-radius: 0.375rem; }
+.rounded-lg { border-radius: 0.5rem; }
+.rounded-xl { border-radius: 0.75rem; }
+.rounded-2xl { border-radius: 1rem; }
+.rounded-full { border-radius: 9999px; }
+
+/* ============================================
+   13. BOX SHADOW
+   ============================================ */
+
+.shadow { box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05); }
+.shadow-md { box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); }
+.shadow-lg { box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1); }
+.shadow-xl { box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1); }
+.shadow-2xl { box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25); }
+
+/* ============================================
+   14. OPACITY & EFFECTS
+   ============================================ */
+
+.opacity-50 { opacity: 0.5; }
+
+.backdrop-blur-sm {
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+}
+
+.backdrop-blur-md {
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+}
+
+.blur {
+    filter: blur(12px);
+    -webkit-filter: blur(12px);
+}
+
+/* ============================================
+   15. POSITION & Z-INDEX
+   ============================================ */
+
+.fixed { position: fixed; }
+.absolute { position: absolute; }
+.relative { position: relative; }
+
+.inset-0 { top: 0; right: 0; bottom: 0; left: 0; }
+.inset-y-0 { top: 0; bottom: 0; }
+
+.z-50 { z-index: 50; }
+.z-\[9999\] { z-index: 9999; }
+
+.top-1/2 { top: 50%; }
+.left-1/2 { left: 50%; }
+.right-0 { right: 0; }
+
+/* ============================================
+   16. TRANSFORM
+   ============================================ */
+
+.transform { transform: translate(var(--tw-translate-x), var(--tw-translate-y)); }
+
+.-translate-x-1/2 {
+    --tw-translate-x: -50%;
+    transform: translate(var(--tw-translate-x), var(--tw-translate-y)) scale(var(--tw-scale-x), var(--tw-scale-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y));
+}
+
+.-translate-y-1/2 {
+    --tw-translate-y: -50%;
+    transform: translate(var(--tw-translate-x), var(--tw-translate-y)) scale(var(--tw-scale-x), var(--tw-scale-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y));
+}
+
+.translate-x-0 { --tw-translate-x: 0px; }
+.translate-y-0 { --tw-translate-y: 0px; }
+
+.scale-\[1.02\] {
+    --tw-scale-x: 1.02;
+    --tw-scale-y: 1.02;
+    transform: translate(var(--tw-translate-x), var(--tw-translate-y)) scale(var(--tw-scale-x), var(--tw-scale-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y));
+}
+
+/* ============================================
+   17. TRANSITIONS & ANIMATIONS
+   ============================================ */
+
+.transition { transition-property: all; transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1); transition-duration: 150ms; }
+
+.duration-200 { transition-duration: 200ms; }
+.duration-300 { transition-duration: 300ms; }
+.duration-700 { transition-duration: 700ms; }
+
+.ease { transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1); }
+
+/* Animasi spin untuk loading */
+@keyframes spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+.spinner {
+    display: inline-block;
+    width: 1.5rem;
+    height: 1.5rem;
+    border-radius: 9999px;
+    border: 2px solid rgba(79, 70, 229, 0.3);
+    border-top-color: var(--indigo-600);
+    animation: spin 1s linear infinite;
+}
+
+.animate-spin {
+    animation: spin 1s linear infinite;
+}
+
+/* Animasi bounce */
+@keyframes bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-0.5rem); }
+}
+
+.animate-bounce {
+    animation: bounce 1s infinite;
+}
+
+/* ============================================
+   18. FORMS & INPUTS
+   ============================================ */
+
+input, select, textarea {
+    background-color: #ffffff;
+    border-width: 1px;
+    border-color: var(--gray-300);
+    border-radius: 0.5rem;
+    padding: 0.5rem 1rem;
+    font-size: 1rem;
+    transition: all 0.2s ease;
+    font-family: inherit;
+}
+
+input::placeholder, textarea::placeholder {
+    color: var(--gray-400);
+}
+
+input:focus, select:focus, textarea:focus {
+    outline: none;
+    border-color: var(--indigo-600);
+    box-shadow: 0 0 0 2px var(--indigo-50), 0 0 0 4px var(--indigo-600);
+}
+
+input[type="radio"], input[type="checkbox"] {
+    width: 1rem;
+    height: 1rem;
+    accent-color: var(--indigo-600);
+}
+
+/* ============================================
+   19. BUTTONS
+   ============================================ */
+
+button {
+    cursor: pointer;
+    border-radius: 0.5rem;
+    font-weight: 500;
+    transition: all 0.2s ease;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+/* ============================================
+   20. TABLE STYLES
+   ============================================ */
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+thead {
+    background-color: var(--gray-50);
+}
+
+th {
+    padding: 0.75rem 1.5rem;
+    text-align: left;
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: var(--gray-500);
+    text-transform: uppercase;
+}
+
+td {
+    padding: 1rem 1.5rem;
+}
+
+tbody tr:hover {
+    background-color: var(--gray-50);
+}
+
+/* ============================================
+   21. RESPONSIVE - UTILITIES
+   ============================================ */
+
+/* sm: 640px */
+@media (min-width: 640px) {
+    .sm\:px-6 { padding-left: 1.5rem; padding-right: 1.5rem; }
+    .sm\:flex { display: flex; }
+    .sm\:grid-cols-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .sm\:flex-row { flex-direction: row; }
+}
+
+/* md: 768px */
+@media (min-width: 768px) {
+    .md\:w-auto { width: auto; }
+    .md\:hidden { display: none; }
+    .md\:flex { display: flex; }
+    .md\:items-center { align-items: center; }
+    .md\:pt-32 { padding-top: 8rem; }
+    .md\:mt-0 { margin-top: 0; }
+    .md\:space-y-0 > * + * { margin-top: 0; }
+    .md\:space-x-1 > * + * { margin-left: 0.25rem; }
+    .md\:grid-cols-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .md\:flex-row { flex-direction: row; }
+}
+
+/* lg: 1024px */
+@media (min-width: 1024px) {
+    .lg\:px-8 { padding-left: 2rem; padding-right: 2rem; }
+    .lg\:grid-cols-4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+}
+
+/* ============================================
+   22. CONTAINER QUERIES
+   ============================================ */
+
+.container {
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.mx-auto { margin-left: auto; margin-right: auto; }
+
+/* ============================================
+   23. UTILITY CLASSES
+   ============================================ */
+
+.cursor-pointer { cursor: pointer; }
+.focus\:outline-none:focus { outline: 2px solid transparent; outline-offset: 2px; }
+.focus\:ring-2:focus { box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.5), 0 0 0 4px var(--indigo-600); }
+
+.divide-y > * + * { border-top-width: 1px; border-color: var(--gray-100); }
+.divide-y-reverse > * + * { border-top-width: 0; border-bottom-width: 1px; }
+
+.divide-gray-100 > * + * { border-color: var(--gray-100); }
+.divide-gray-200 > * + * { border-color: var(--gray-200); }
+
+.overflow-hidden { overflow: hidden; }
+.overflow-x-auto { overflow-x: auto; }
+
+.space-y-2 > * + * { margin-top: 0.5rem; }
+.space-y-5 > * + * { margin-top: 1.25rem; }
+.space-y-6 > * + * { margin-top: 1.5rem; }
+
+.space-x-1 > * + * { margin-left: 0.25rem; }
+.space-x-2 > * + * { margin-left: 0.5rem; }

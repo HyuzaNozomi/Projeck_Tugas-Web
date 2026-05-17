@@ -22,9 +22,14 @@ function showNavbar() {
 }
 
 // Begitu mouse masuk area 100px dari atas, panggil showNavbar
+// Pake throttle biar gak overload (cuma diproses tiap 100ms)
+let lastMoveTime = 0;
 document.addEventListener('mousemove', (e) => {
+    const now = Date.now();
+    if (now - lastMoveTime < 100) return;
+    lastMoveTime = now;
     if (e.clientY <= 100) {
-        showNavbar();
+        showNavbar();   
     }
 });
 

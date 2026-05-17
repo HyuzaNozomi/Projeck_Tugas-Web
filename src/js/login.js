@@ -50,30 +50,22 @@ function initDateSelects() {
     document.head.appendChild(style);
 })();
 
+function escapeHtml(text) {
+    const div = document.createElement('div');
+    div.appendChild(document.createTextNode(text));
+    return div.innerHTML;
+}
+
 function showNotification(message, isSuccess = true) {
     const container = document.getElementById('notification');
-    const iconBg = isSuccess ? 'bg-emerald-100' : 'bg-red-100';
-    const iconColor = isSuccess ? 'text-emerald-600' : 'text-red-600';
+    clearTimeout(Number(container.dataset.tid));
     const accentColor = isSuccess ? 'border-l-emerald-500' : 'border-l-red-500';
     const progressColor = isSuccess ? 'bg-emerald-500' : 'bg-red-500';
 
-    const iconSvg = isSuccess ? `
-        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
-        </svg>
-    ` : `
-        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"/>
-        </svg>
-    `;
-
     container.innerHTML = `
-        <div class="flex items-start gap-3.5 bg-white ${accentColor} border-l-4 p-4 rounded-xl shadow-lg backdrop-blur-md min-w-[340px] max-w-[400px] w-fit mx-auto t-visible">
-            <div class="${iconBg} ${iconColor} p-2 rounded-full shrink-0">
-                ${iconSvg}
-            </div>
+        <div class="flex items-start gap-3.5 bg-white ${accentColor} border-l-4 p-4 rounded-xl shadow-lg backdrop-blur-md min-w-85 max-w-100 w-fit mx-auto t-visible">
             <div class="flex-1 min-w-0 pt-0.5">
-                <p class="text-sm font-semibold text-gray-800 leading-snug">${message}</p>
+                <p class="text-sm font-semibold text-gray-800 leading-snug">${escapeHtml(message)}</p>
                 <div class="mt-2.5 h-1.5 rounded-full bg-gray-100 overflow-hidden">
                     <div class="h-full ${progressColor} rounded-full t-progress" style="width:100%"></div>
                 </div>
@@ -124,7 +116,7 @@ function handleSubmit(event) {
     const tanggal = document.getElementById('tanggal').value;
     const bulan = document.getElementById('bulan').value;
     const tahun = document.getElementById('tahun').value;
-    const password = document.getElementById('password').value;
+    const password = document.getElementById('password').value.trim();
     
     // Validasi: pastikan gak ada yang kosong
     if (!nim || !nama || !alamat || !tanggal || !bulan || !tahun || !password) {
@@ -135,7 +127,7 @@ function handleSubmit(event) {
         showNotification('Password minimal 6 karakter!', false);
         return;
     }
-    if (isNaN(nim) || nim.length < 8) {
+    if (!/^\d{8,}$/.test(nim)) {
         showNotification('NIM harus berupa angka minimal 8 digit!', false);
         return;
     }
@@ -153,15 +145,18 @@ function handleSubmit(event) {
     // Ambil data lama dulu, baru tambahin data baru, simpen lagi
     let allData = localStorage.getItem('mahasiswaList');
     allData = allData ? JSON.parse(allData) : [];
+    if (allData.some(m => m.nim === nim)) {
+        showNotification('NIM sudah terdaftar!', false);
+        return;
+    }
     allData.push(dataMahasiswa);
     localStorage.setItem('mahasiswaList', JSON.stringify(allData));
     
     showNotification(`Registrasi berhasil! Selamat datang, ${nama} (NIM: ${nim})`, true);
     
-    // Kosongin dropdown tanggal, bulan, tahun setelah submit
-    document.getElementById('tanggal').value = '';
-    document.getElementById('bulan').value = '';
-    document.getElementById('tahun').value = '';
+    // Reset form setelah submit
+    document.getElementById('registerForm').reset();
+    initDateSelects();
 }
 
 // Begitu script login.js dimuat, langsung jalanin:
